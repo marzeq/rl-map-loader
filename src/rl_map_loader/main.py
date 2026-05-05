@@ -1,6 +1,7 @@
 """Main application for RL Map Loader using Dear ImGui."""
 
 from pathlib import Path
+import time
 
 import imgui
 from imgui.integrations.glfw import GlfwRenderer
@@ -21,6 +22,7 @@ class RLMapLoaderApp:
         self.selected_map_index = -1
         self.status_message = ""
         self.status_color = (1.0, 1.0, 1.0, 1.0)
+        self.status_time = 0.0
         self.window = None
         self.impl = None
         self._init_imgui()
@@ -47,6 +49,7 @@ class RLMapLoaderApp:
         """Set status message with color."""
         self.status_message = message
         self.status_color = (0.0, 1.0, 0.0, 1.0) if success else (1.0, 0.0, 0.0, 1.0)
+        self.status_time = time.time()
 
     def _handle_dropped_files(self, file_paths: list):
         """Handle dropped files from drag and drop."""
@@ -75,11 +78,8 @@ class RLMapLoaderApp:
         imgui.set_next_window_size(io.display_size[0], io.display_size[1])
         imgui.begin("RL Map Loader", flags=imgui.WINDOW_NO_MOVE)
 
-        imgui.text("Rocket League Map Loader")
-        imgui.separator()
-
         imgui.text("Rocket League Installation Path:")
-        changed, self.rl_path_input = imgui.input_text(
+        _, self.rl_path_input = imgui.input_text(
             "##rl_path", self.rl_path_input, 256
         )
 
@@ -104,15 +104,14 @@ class RLMapLoaderApp:
 
     def render_map_list(self):
         """Render custom maps list."""
-        imgui.text("Custom Maps:")
-        imgui.text("(Drag & drop .udk or .upk files here)")
+        imgui.text("Drag & drop .udk or .upk to add maps")
 
         custom_maps = self.config.get_custom_maps()
 
         if len(custom_maps) == 0:
             imgui.text_colored("No custom maps added", 0.7, 0.7, 0.7, 1.0)
         else:
-            imgui.text(f"Available maps: {len(custom_maps)}")
+            imgui.text("Available maps:")
             if imgui.begin_child("maps_list", 0, 200, border=True):
                 for i, map_path in enumerate(custom_maps):
                     path = Path(map_path)
@@ -124,20 +123,6 @@ class RLMapLoaderApp:
                         self.selected_map_index = i
 
                 imgui.end_child()
-
-            if imgui.button("Remove Selected", width=200):
-                if 0 <= self.selected_map_index < len(custom_maps):
-                    self.config.remove_custom_map(custom_maps[self.selected_map_index])
-                    self.selected_map_index = -1
-                    self._set_status("Map removed", True)
-                else:
-                    self._set_status("No map selected", False)
-
-        imgui.separator()
-
-    def render_map_controls(self):
-        """Render map control buttons."""
-        imgui.text("Map Control:")
 
         custom_maps = self.config.get_custom_maps()
         has_selection = 0 <= self.selected_map_index < len(custom_maps)
@@ -161,26 +146,36 @@ class RLMapLoaderApp:
             self._set_status(message, success)
             self.selected_map_index = -1
 
+        if len(custom_maps) > 0:
+            imgui.same_line()
+            if imgui.button("Remove Selected", width=200):
+                if 0 <= self.selected_map_index < len(custom_maps):
+                    self.config.remove_custom_map(custom_maps[self.selected_map_index])
+                    self.selected_map_index = -1
+                    self._set_status("Map removed", True)
+                else:
+                    self._set_status("No map selected", False)
+
         if not restore_enabled:
             imgui.pop_style_var()
 
         if self.map_manager.has_custom_map_installed():
             imgui.text_colored(
-                "Custom map is currently loaded. Launch freeplay map \"Underpass - Soccar\" to load it",
-                1.0, 0.8, 0.0, 1.0
-            )
-        else:
-            imgui.text_colored(
-                "Original map is active",
+                "Custom map is active. Launch freeplay map \"Underpass - Soccar\" to play it",
                 0.0, 1.0, 0.0, 1.0
             )
+        else:
+            imgui.text("Original map is active")
 
-        imgui.separator()
 
     def render_status(self):
         """Render status messages."""
         if self.status_message:
-            imgui.text_colored(self.status_message, *self.status_color)
+            if time.time() - self.status_time <= 5:
+                imgui.separator()
+                imgui.text_colored(self.status_message, *self.status_color)
+            else:
+                self.status_message = ""
 
     def render(self):
         """Main render function."""
@@ -189,7 +184,6 @@ class RLMapLoaderApp:
         self.render_header()
         if self.map_manager.is_valid_rl_install():
             self.render_map_list()
-            self.render_map_controls()
             self.render_status()
 
         imgui.end()
