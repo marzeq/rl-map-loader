@@ -1,15 +1,13 @@
 # RL Map Loader
 
-A Dear ImGui application for loading custom Rocket League maps on Windows and Linux.
+Application for loading custom Rocket League maps on Epic Games without Bakkesmod.
 
 ## Features
 
 - **Cross-platform**: Works on Windows and Linux
-- **Easy setup**: On first launch, select your Rocket League installation folder
 - **Drag & drop**: Add custom maps by dragging `.udk` or `.upk` files into the app
 - **Safe backups**: Automatically backs up the original map before loading a custom one
 - **Easy restore**: Restore the original map with a single click
-- **Persistent storage**: Remembers your settings and custom maps between sessions
 
 ## Installation
 
@@ -44,50 +42,30 @@ uv run rl-map-loader
 
 ### First Launch
 
-On first launch, you'll need to specify your Rocket League installation folder:
+First, you'll need to specify your Rocket League installation folder:
 
 - **Windows**: Default is `C:\Program Files\Epic Games\rocketleague`
 - **Linux**: Default is `~/Games/Heroic/rocketleague`
 
-You can:
-- Type or paste the path directly
-- Use the "Reset to Default" button to revert to the default path
+If the default is not correct, type or paste in the correct path directly and press **Confirm**
 
 ### Loading Custom Maps
 
 1. **Add maps**: Drag `.udk` or `.upk` files directly into the app window. The app will:
-   - Convert `.udk` files to `.upk` format
-   - Store them in your user data directory
-
 2. **Select a map**: Click on a map from the "Custom Maps" list
-
 3. **Load the map**: Click the "Load Selected Map" button. The app will:
    - Back up the original `Labs_Underpass_P.upk` file (if no backup exists)
    - Replace it with your custom map
-
 4. **Restore the original**: Click "Restore Original" to revert to the original map and clean up the backup
+
+### Loading custom map in-game
+
+1. Launch Rocket League without Anti-Cheat
+1. Open free-play training and select map **Underpass - Soccar**
 
 ### Managing Custom Maps
 
-- **Right-click** on a map in the list to remove it
-- Maps are stored in:
-  - **Windows**: `%APPDATA%\rl-map-loader\maps`
-  - **Linux**: `~/.local/share/rl-map-loader/maps`
-
-## How It Works
-
-- Configuration and map paths are stored in OS-specific locations:
-  - **Windows**: `%APPDATA%\rl-map-loader\config.json`
-  - **Linux**: `~/.local/share/rl-map-loader/config.json`
-
-- When you load a custom map:
-  1. If no backup exists, the original map is backed up to `Labs_Underpass_P.upk.bak`
-  2. Your custom map is copied to replace the original
-  3. The backup remains until you restore the original
-
-- When you restore:
-  1. The backup is copied back to the original location
-  2. The backup file is deleted
+Select a map and click **Remove selected** to delete it from your user data directory. This will not affect the original map or any backups.
 
 ## Troubleshooting
 
