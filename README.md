@@ -53,7 +53,7 @@ If the default is not correct, type or paste in the correct path directly and pr
 
 ### Loading Custom Maps
 
-1. **Add maps**: Drag `.udk` or `.upk` files directly into the app window. The app will:
+1. **Add maps**: Drag `.udk` or `.upk` files directly into the app window.
 2. **Select a map**: Click on a map from the "Custom Maps" list
 3. **Load the map**: Click the "Load Selected Map" button. The app will:
    - Back up the original `Labs_Underpass_P.upk` file (if no backup exists)
@@ -62,8 +62,11 @@ If the default is not correct, type or paste in the correct path directly and pr
 
 ### Loading custom map in-game
 
-1. Launch Rocket League without Anti-Cheat
-1. Open free-play training and select map **Underpass - Soccar**
+1. Launch Rocket League
+
+> You should be able to launch it without Anti-Cheat (EAC), but just in case, make sure to launch it without EAC
+
+2. Open free-play training and select map **Underpass - Soccar**
 
 ### Managing Custom Maps
 
