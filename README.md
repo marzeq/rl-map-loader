@@ -32,7 +32,7 @@ uv sync
 ### Running the Application
 
 ```bash
-uv run main
+uv run rl-map-loader
 ```
 
 Or if you've installed it as a script:
@@ -90,23 +90,8 @@ You can:
 
 ## Troubleshooting
 
-- **"Invalid Rocket League installation path"**: Make sure the path points to your Rocket League install folder and contains the `CookedPCConsole` directory
+- **"Invalid Rocket League installation path"**: Make sure the path points to your Rocket League install folder and contains the `TAGame/CookedPCConsole` directory
 
 - **Maps not appearing**: Make sure you're dragging actual `.udk` or `.upk` files
 
 - **Permission denied errors**: Ensure you have write permissions to your Rocket League installation folder
-
-## Development
-
-### Running tests
-
-```bash
-uv run pytest
-```
-
-### Code formatting
-
-```bash
-uv run black .
-uv run ruff check .
-```

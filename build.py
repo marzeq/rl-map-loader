@@ -47,15 +47,15 @@ def build():
     if result.returncode == 0:
         if sys.platform == "win32":
             exe_path = root / "dist" / "rl-map-loader.exe"
-            print(f"\n✓ Build successful!")
+            print(f"\nBuild successful!")
             print(f"Executable: {exe_path}")
         else:
             exe_path = root / "dist" / "rl-map-loader"
-            print(f"\n✓ Build successful!")
+            print(f"\nBuild successful!")
             print(f"Executable: {exe_path}")
         print(f"\nRun with: {exe_path}")
     else:
-        print(f"\n✗ Build failed with exit code {result.returncode}")
+        print(f"\nBuild failed with exit code {result.returncode}")
         sys.exit(1)
 
 
