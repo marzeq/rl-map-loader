@@ -16,7 +16,6 @@ def build():
     root = Path(__file__).parent
     current_os = sys.platform
     
-    # PyInstaller arguments
     args = [
         "pyinstaller",
         "--onefile",

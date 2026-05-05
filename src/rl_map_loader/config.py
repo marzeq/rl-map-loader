@@ -83,12 +83,11 @@ class Config:
             self.data["custom_maps"].remove(map_path_str)
             self.save()
             
-            # Delete the file if it exists in the maps directory
             if map_path_obj.exists() and map_path_obj.parent == self.maps_dir:
                 try:
                     map_path_obj.unlink()
                 except Exception:
-                    pass  # Fail silently if file deletion fails
+                    pass
 
     def get_custom_maps(self) -> list[str]:
         """Get list of custom maps."""

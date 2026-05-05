@@ -58,14 +58,11 @@ class RLMapLoaderApp:
                 continue
             
             try:
-                # Determine target filename (normalize .udk to .upk)
                 target_name = path.stem + ".upk"
                 target_path = self.config.maps_dir / target_name
                 
-                # Copy file to maps directory
                 shutil.copy2(path, target_path)
-                
-                # Add to config
+               
                 self.config.add_custom_map(str(target_path))
                 self._set_status(f"Added map: {target_name}", True)
             except Exception as e:
@@ -81,7 +78,6 @@ class RLMapLoaderApp:
         imgui.text("Rocket League Map Loader")
         imgui.separator()
 
-        # RL Installation Path
         imgui.text("Rocket League Installation Path:")
         changed, self.rl_path_input = imgui.input_text(
             "##rl_path", self.rl_path_input, 256
@@ -129,7 +125,6 @@ class RLMapLoaderApp:
 
                 imgui.end_child()
 
-            # Remove Selected button
             if imgui.button("Remove Selected", width=200):
                 if 0 <= self.selected_map_index < len(custom_maps):
                     self.config.remove_custom_map(custom_maps[self.selected_map_index])
@@ -147,7 +142,6 @@ class RLMapLoaderApp:
         custom_maps = self.config.get_custom_maps()
         has_selection = 0 <= self.selected_map_index < len(custom_maps)
 
-        # Load button
         if imgui.button("Load Selected Map", width=200):
             if has_selection:
                 map_path = Path(custom_maps[self.selected_map_index])
@@ -158,7 +152,6 @@ class RLMapLoaderApp:
 
         imgui.same_line()
 
-        # Restore button
         restore_enabled = self.map_manager.has_custom_map_installed()
         if not restore_enabled:
             imgui.push_style_var(imgui.STYLE_ALPHA, imgui.get_style().alpha * 0.5)
@@ -171,10 +164,9 @@ class RLMapLoaderApp:
         if not restore_enabled:
             imgui.pop_style_var()
 
-        # Status display
         if self.map_manager.has_custom_map_installed():
             imgui.text_colored(
-                "Custom map is currently loaded",
+                "Custom map is currently loaded. Launch freeplay map \"Underpass - Soccar\" to load it",
                 1.0, 0.8, 0.0, 1.0
             )
         else:
@@ -221,8 +213,7 @@ class RLMapLoaderApp:
         glfw.make_context_current(self.window)
         self.impl = GlfwRenderer(self.window)
 
-        # Register drag-and-drop callback
-        glfw.set_drop_callback(self.window, lambda window, paths: self._handle_dropped_files(paths))
+        glfw.set_drop_callback(self.window, lambda _, paths: self._handle_dropped_files(paths))
 
         while not glfw.window_should_close(self.window):
             glfw.poll_events()

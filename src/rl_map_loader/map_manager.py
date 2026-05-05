@@ -39,26 +39,21 @@ class MapManager:
         """
         map_file = Path(map_file)
 
-        # Validate map file
         if not map_file.exists():
             return False, f"Map file not found: {map_file}"
 
-        # Ensure the file has .upk extension
         if map_file.suffix.lower() != ".upk":
             return False, f"Invalid map file extension: {map_file.suffix}"
 
-        # Ensure target directory exists
         if not self.cooked_dir.exists():
             self.cooked_dir.mkdir(parents=True, exist_ok=True)
 
-        # Create backup if it doesn't exist
         if not self.has_backup() and self.target_file.exists():
             try:
                 shutil.copy2(self.target_file, self.backup_file)
             except Exception as e:
                 return False, f"Failed to create backup: {e}"
 
-        # Copy map file to target location
         try:
             shutil.copy2(map_file, self.target_file)
             return True, f"Successfully loaded map: {map_file.name}"
