@@ -13,12 +13,19 @@ A Dear ImGui application for loading custom Rocket League maps on Windows and Li
 
 ## Installation
 
-### Prerequisites
+### From releases
+
+Grab the appropriate release archive for your platform from the [Releases](https://github.com/marzeq/rl-map-loader/releases/latest) page,
+extract it, and run the executable.
+
+### From source
+
+#### Prerequisites
 
 - Python 3.10 or higher
 - `uv` package manager
 
-### Setup
+#### Setup
 
 1. Clone or navigate to this repository
 2. Install dependencies:
@@ -27,19 +34,13 @@ A Dear ImGui application for loading custom Rocket League maps on Windows and Li
 uv sync
 ```
 
-## Usage
-
-### Running the Application
+#### Run
 
 ```bash
 uv run rl-map-loader
 ```
 
-Or if you've installed it as a script:
-
-```bash
-rl-map-loader
-```
+## Usage
 
 ### First Launch
 
