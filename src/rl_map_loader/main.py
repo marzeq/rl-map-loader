@@ -112,17 +112,17 @@ class RLMapLoaderApp:
             imgui.text_colored("No custom maps added", 0.7, 0.7, 0.7, 1.0)
         else:
             imgui.text("Available maps:")
-            if imgui.begin_child("maps_list", 0, 200, border=True):
-                for i, map_path in enumerate(custom_maps):
-                    path = Path(map_path)
-                    selected = self.selected_map_index == i
-                    clicked, selected = imgui.selectable(
-                        path.stem, selected
-                    )
-                    if clicked:
-                        self.selected_map_index = i
+            imgui.begin_child("maps_list", 0, 200, border=True)
+            for i, map_path in enumerate(custom_maps):
+                path = Path(map_path)
+                selected = self.selected_map_index == i
+                clicked, selected = imgui.selectable(
+                    path.stem, selected
+                )
+                if clicked:
+                    self.selected_map_index = i
 
-                imgui.end_child()
+            imgui.end_child()
 
         custom_maps = self.config.get_custom_maps()
         has_selection = 0 <= self.selected_map_index < len(custom_maps)
