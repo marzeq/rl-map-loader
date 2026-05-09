@@ -1,6 +1,7 @@
 """Main application for RL Map Loader using Dear ImGui."""
 
 from pathlib import Path
+import shutil
 import time
 
 import imgui
@@ -48,13 +49,20 @@ class RLMapLoaderApp:
 
     def _handle_dropped_files(self, file_paths: list):
         """Handle dropped files from drag and drop."""
-        import shutil
-        
+        okay_files: list[Path] = []
+        not_okay_files: list[str] = []
         for file_path in file_paths:
             path = Path(file_path)
             if path.suffix.lower() not in [".udk", ".upk"]:
+                not_okay_files.append(path.name)
                 continue
-            
+            okay_files.append(path)
+
+        if len(not_okay_files) > 0:
+            self._set_status(f"Invalid map files: {', '.join(not_okay_files)}", False)
+            return
+
+        for path in okay_files:
             try:
                 target_name = path.stem + ".upk"
                 target_path = self.config.maps_dir / target_name

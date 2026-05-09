@@ -85,15 +85,3 @@ class MapManager:
             return True, "Successfully restored original map"
         except Exception as e:
             return False, f"Failed to restore map: {e}"
-
-    def normalize_map_file(self, map_file: Path) -> Path:
-        """Convert .udk files to .upk extension."""
-        map_file = Path(map_file)
-        if map_file.suffix.lower() == ".udk":
-            upk_file = map_file.with_suffix(".upk")
-            try:
-                shutil.copy2(map_file, upk_file)
-                return upk_file
-            except Exception:
-                return map_file
-        return map_file
