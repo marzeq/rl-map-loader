@@ -8,7 +8,6 @@ from imgui.integrations.glfw import GlfwRenderer
 import glfw
 
 from .config import Config, get_default_rl_path
-from .map_manager import MapManager
 
 
 class RLMapLoaderApp:
@@ -17,8 +16,6 @@ class RLMapLoaderApp:
     def __init__(self):
         self.config = Config()
         self.rl_path_input = str(self.config.get_rl_install_path())
-        rl_path = Path(self.rl_path_input)
-        self.map_manager = MapManager(rl_path)
         self.selected_map_index = -1
         self.status_message = ""
         self.status_color = (1.0, 1.0, 1.0, 1.0)
@@ -26,7 +23,7 @@ class RLMapLoaderApp:
         self.window = None
         self.impl = None
         self._init_imgui()
-        self._update_map_manager()
+        self._update_rl_path()
 
     def _init_imgui(self):
         """Initialize ImGui context."""
@@ -34,15 +31,13 @@ class RLMapLoaderApp:
         io = imgui.get_io()
         io.display_size = (1000, 700)
 
-    def _update_map_manager(self):
-        """Update the map manager with current RL path."""
+    def _update_rl_path(self):
         rl_path = Path(self.rl_path_input)
-        self.map_manager = MapManager(rl_path)
+        self.config.set_rl_install_path(rl_path)
 
     def _confirm_rl_install_path(self):
         """Commit the typed Rocket League installation path."""
-        self.config.set_rl_install_path(self.rl_path_input)
-        self._update_map_manager()
+        self._update_rl_path()
         self._set_status("Updated Rocket League installation path", True)
 
     def _set_status(self, message: str, success: bool = True):
@@ -90,11 +85,11 @@ class RLMapLoaderApp:
         if imgui.button("Reset to Default"):
             default_path = get_default_rl_path()
             self.rl_path_input = str(default_path)
-            self.config.set_rl_install_path(str(default_path))
-            self._update_map_manager()
+            self.config.set_rl_install_path(default_path)
+            self._update_rl_path()
             self._set_status("Reset to default path", True)
 
-        if not self.map_manager.is_valid_rl_install():
+        if not self.config.is_valid_rl_install():
             imgui.text_colored(
                 "Invalid Rocket League installation path",
                 1.0, 0.0, 0.0, 1.0
@@ -130,19 +125,19 @@ class RLMapLoaderApp:
         if imgui.button("Load Selected Map", width=200):
             if has_selection:
                 map_path = Path(custom_maps[self.selected_map_index])
-                success, message = self.map_manager.load_map(map_path)
+                success, message = self.config.load_map(map_path)
                 self._set_status(message, success)
             else:
                 self._set_status("No map selected", False)
 
         imgui.same_line()
 
-        restore_enabled = self.map_manager.has_custom_map_installed()
+        restore_enabled = self.config.get_loaded_map() is not None
         if not restore_enabled:
             imgui.push_style_var(imgui.STYLE_ALPHA, imgui.get_style().alpha * 0.5)
 
         if imgui.button("Restore Original", width=200) and restore_enabled:
-            success, message = self.map_manager.restore_original()
+            success, message = self.config.restore_original()
             self._set_status(message, success)
             self.selected_map_index = -1
 
@@ -159,9 +154,11 @@ class RLMapLoaderApp:
         if not restore_enabled:
             imgui.pop_style_var()
 
-        if self.map_manager.has_custom_map_installed():
+        loaded_map = self.config.get_loaded_map()
+        if loaded_map is not None:
+            loaded_map_name = Path(loaded_map).stem
             imgui.text_colored(
-                "Custom map is active. Launch freeplay map \"Underpass - Soccar\" to play it",
+                f"Custom map \"{loaded_map_name}\" is active. Launch freeplay map \"Underpass - Soccar\" to play it",
                 0.0, 1.0, 0.0, 1.0
             )
         else:
@@ -182,7 +179,7 @@ class RLMapLoaderApp:
         imgui.new_frame()
 
         self.render_header()
-        if self.map_manager.is_valid_rl_install():
+        if self.config.is_valid_rl_install():
             self.render_map_list()
             self.render_status()
 

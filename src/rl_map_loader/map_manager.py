@@ -8,10 +8,10 @@ class MapManager:
     """Handles map file operations, backups, and restoration."""
 
     TARGET_MAP = "Labs_Underpass_P.upk"
-    BACKUP_EXT = ".upk.bak"
+    BACKUP_EXT = ".bak"
 
     def __init__(self, rl_install_path: Path):
-        self.rl_install_path = Path(rl_install_path)
+        self.rl_install_path = rl_install_path
         self.cooked_dir = self.rl_install_path / "TAGame" / "CookedPCConsole"
         self.target_file = self.cooked_dir / self.TARGET_MAP
         self.backup_file = self.cooked_dir / f"{self.TARGET_MAP}{self.BACKUP_EXT}"
@@ -22,6 +22,14 @@ class MapManager:
 
     def has_backup(self) -> bool:
         """Check if a backup of the original map exists."""
+        # migration from backup file being .upk.upk.bak to .upk.bak
+        old_backup = self.cooked_dir / f"{self.TARGET_MAP}.upk.bak"
+        if old_backup.exists():
+            try:
+                old_backup.rename(self.backup_file)
+            except Exception:
+                pass
+
         return self.backup_file.exists()
 
     def has_custom_map_installed(self) -> bool:

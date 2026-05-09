@@ -1,3 +1,3 @@
 """Application for loading custom Rocket League maps."""
 
-__version__ = "0.1.2"
+__version__ = "0.2.0"
