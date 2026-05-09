@@ -103,6 +103,10 @@ class Config:
                 except Exception:
                     pass
 
+        loaded_map = self.get_loaded_map()
+        if loaded_map and loaded_map.resolve() == map_path_obj:
+            self.restore_original()
+
     # proxies to map_manager
 
     def is_valid_rl_install(self) -> bool:
