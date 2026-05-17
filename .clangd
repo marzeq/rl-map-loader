@@ -1,0 +1,10 @@
+CompileFlags:
+  Add:
+    - -std=c++23
+    - -Iinclude
+    - -Isrc
+    - -Isubprojects/glfw/include
+    - -Ithird_party/imgui
+    - -Ijson/include
+FallbackFlags:
+  - -std=c++23
