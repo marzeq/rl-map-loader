@@ -18,6 +18,8 @@ Application for loading custom Rocket League maps on Epic Games without Bakkesmo
 Grab the appropriate release archive for your platform from the [Releases](https://github.com/marzeq/rl-map-loader/releases/latest) page,
 extract it, and run the executable.
 
+On Linux, make sure to give the executable permission to the file.
+
 ### From source
 
 See [BUILD.md](./BUILD.md) for instructions on building the application from source.
