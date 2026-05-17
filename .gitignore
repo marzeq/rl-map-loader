@@ -120,3 +120,5 @@ dmypy.json
 
 # UV
 .venv/
+
+imgui.ini
