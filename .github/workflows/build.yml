@@ -40,11 +40,15 @@ jobs:
           meson setup build
           ninja -C build
 
+      - name: Rename binary
+        run: |
+          mv build/rl-map-loader build/rl-map-loader-linux
+
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: rl-map-loader-linux
-          path: build/rl-map-loader
+          path: build/rl-map-loader-linux
 
   build-windows:
     runs-on: windows-latest
@@ -70,11 +74,16 @@ jobs:
           meson setup build
           ninja -C build
 
+      - name: Rename binary
+        shell: msys2 {0}
+        run: |
+          mv build/rl-map-loader.exe build/rl-map-loader-windows.exe
+
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: rl-map-loader-windows
-          path: build/rl-map-loader.exe
+          path: build/rl-map-loader-windows.exe
 
   release:
     needs: [build-linux, build-windows]
@@ -88,7 +97,7 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           files: |
-            rl-map-loader-linux/rl-map-loader
-            rl-map-loader-windows/rl-map-loader.exe
+            rl-map-loader-linux/rl-map-loader-linux
+            rl-map-loader-windows/rl-map-loader-windows.exe
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
