@@ -20,26 +20,4 @@ extract it, and run the executable.
 
 ### From source
 
-#### Prerequisites
-
-- Python 3.10 or higher
-- `uv` package manager
-
-#### Setup
-
-1. Clone or navigate to this repository
-2. Install dependencies:
-
-```bash
-uv sync
-```
-
-#### Run
-
-```bash
-uv run rl-map-loader
-```
-
-## Usage
-
-See the [usage guide](./USAGE.md) for detailed instructions on how to use the app.
+See [BUILD.md](./BUILD.md) for instructions on building the application from source.

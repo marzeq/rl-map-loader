@@ -1,0 +1,71 @@
+[
+  {
+    "version": "0.3.0",
+    "name": "C++23 Rewrite",
+    "date": "2026-05-17",
+    "features": [
+      "Complete rewrite in modern C++23",
+      "Cross-platform builds (Linux, Windows)",
+      "Improved performance",
+      "Same UI/UX as Python version",
+      "Full backwards compatibility with Python JSON format",
+      "Automatic format migrations",
+      "Cross-compilation support"
+    ],
+    "platform_support": {
+      "linux": {
+        "supported": true,
+        "architectures": ["x86_64", "aarch64"],
+        "min_glibc": "2.31"
+      },
+      "windows": {
+        "supported": true,
+        "architectures": ["x86_64", "x86"],
+        "min_windows": "Windows 7"
+      },
+      "macos": {
+        "supported": false,
+        "note": "Could be supported with minimal changes"
+      }
+    },
+    "json_format": {
+      "version": 1,
+      "backwards_compatible": true,
+      "migrations": [
+        "Old backup format (.upk.upk.bak -> .upk.bak)",
+        "Config recovery on startup",
+        "Path normalization"
+      ]
+    },
+    "build_system": "Makefiles",
+    "compiler_requirements": {
+      "linux": "GCC 11+ or Clang 13+",
+      "windows_native": "MSVC 2019+ or MinGW-w64",
+      "cross_compile": "MinGW-w64 on Linux"
+    },
+    "dependencies": {
+      "required": [
+        "ImGui (UI)",
+        "GLFW (Window management)",
+        "nlohmann/json (JSON parsing)",
+        "OpenGL (Graphics)"
+      ],
+      "optional": [
+        "CMake (Alternative build system)"
+      ]
+    }
+  },
+  {
+    "version": "0.2.1",
+    "name": "Python Version",
+    "date": "2024-xx-xx",
+    "features": [
+      "Original Python implementation",
+      "Cross-platform support",
+      "ImGui GUI",
+      "Map backup and restore",
+      "JSON configuration"
+    ],
+    "notes": "Previous version - archived in /src/rl_map_loader/"
+  }
+]

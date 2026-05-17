@@ -1,0 +1,2 @@
+# Custom options (built-in options: buildtype, prefix, bindir are handled by Meson)
+

@@ -3,9 +3,8 @@
 #include <filesystem>
 #include <string>
 #include <vector>
-#include <nlohmann/json.hpp>
+#include <optional>
 
-using json = nlohmann::json;
 namespace fs = std::filesystem;
 
 class Config {
