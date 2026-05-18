@@ -29,27 +29,9 @@ sudo pacman -S base-devel meson ninja pkgconf mesa libglvnd glfw cmake
 
 ### Windows
 
-**Using MSVC with Visual Studio:**
-1. Install [Visual Studio Community](https://visualstudio.microsoft.com/community/) with C++ workload
-2. Install [Meson](https://meson-build.com/) and [Ninja](https://ninja-build.org/)
-3. Install [vcpkg](https://github.com/Microsoft/vcpkg):
-   ```cmd
-   git clone https://github.com/Microsoft/vcpkg.git
-   cd vcpkg
-   .\vcpkg.exe integrate install
-   .\vcpkg.exe install glfw3:x64-windows opengl:x64-windows
-   ```
-4. Configure and build:
-   ```cmd
-   git submodule init && git submodule update --recursive
-   meson setup build --prefix=%VCPKG_ROOT%
-   ninja -C build
-   build\rl-map-loader.exe
-   ```
-
 **Using MinGW:**
 1. Install [MSYS2](https://www.msys2.org/)
-2. In MSYS2 terminal:
+2. In MSYS2 UCRT64 terminal:
    ```bash
    pacman -S mingw-w64-ucrt-x86_64-gcc mingw-w64-ucrt-x86_64-meson mingw-w64-ucrt-x86_64-ninja mingw-w64-ucrt-x86_64-cmake mingw-w64-ucrt-x86_64-pkgconf mingw-w64-ucrt-x86_64-mesa
    ```
