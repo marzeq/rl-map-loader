@@ -79,4 +79,5 @@ executable(
   dependencies: [gl_dep, glfw_dep],
   link_args: link_args,
   install: true,
+  win_subsystem: 'windows',
 )
